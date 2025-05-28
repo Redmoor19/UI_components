@@ -1,5 +1,5 @@
 dev:
-	exec pnpm dev
+	pnpm exec vite --host
 
 preview:
 	pnpm exec vite preview

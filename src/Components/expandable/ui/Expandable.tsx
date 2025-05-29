@@ -1,28 +1,9 @@
-import {
-  type Dispatch,
-  type SetStateAction,
-  createContext,
-  use,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { type Dispatch, type SetStateAction, useEffect, useRef } from "react";
+import { ExpandableContextProvider } from "../context/ExpandableContext";
+import { useExpandableListContext } from "../context/ExpandableListContext";
+import { useExpand } from "../hooks/useExpand";
+import { useRegister } from "../hooks/useRegister";
 import type { ExpandableId } from "../types";
-import { useExpandableListContext } from "./ExpandableList";
-
-type ExpandableContextType = {
-  isCurrentExpanded: boolean;
-  toggleCurrentExpanded: () => void;
-  isInsideContext: boolean;
-};
-
-const ExpandableContext = createContext<ExpandableContextType>({
-  isCurrentExpanded: false,
-  toggleCurrentExpanded: () => {},
-  isInsideContext: false,
-});
-
-export const useExpandableContext = () => use(ExpandableContext);
 
 type ExpandableProps = {
   children: React.ReactNode;
@@ -39,57 +20,54 @@ export const Expandable: React.FC<ExpandableProps> = ({
 }) => {
   const { expandedId, setExpanded, registerId, unregisterId, isInsideContext } =
     useExpandableListContext();
-  const [internalOpen, setInternalOpen] = useState(false);
-  const initialRender = useRef(true);
+  const expandedByContext = expandedId === id;
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   if (isInsideContext && id == null)
     throw new Error(
       "If you use 'Expandable' inside 'ExpandableList', pass the 'id' prop",
     );
 
+  id !== undefined &&
+    useRegister(isInsideContext, id, registerId, unregisterId);
+
+  const [isCurrentExpanded, toggleCurrentExpanded] = useExpand(
+    isInsideContext,
+    expandedByContext,
+    setExpanded,
+    id,
+    externalOpen,
+    setExpernalOpen,
+  );
+
   useEffect(() => {
-    if (!isInsideContext || !id) return;
+    const triggerEl = triggerRef?.current;
+    const contentEl = contentRef?.current;
 
-    if (initialRender.current) {
-      registerId(id);
-      initialRender.current = false;
-    }
+    if (!triggerEl || !contentEl) return;
 
-   return () => {
-     unregisterId(id)
-   }
-
-  }, [id, isInsideContext, registerId, unregisterId]);
-
-  const isControlled =
-    externalOpen !== undefined && setExpernalOpen !== undefined;
-  const isContextControlled = isInsideContext;
-
-  const isCurrentExpanded = isControlled
-    ? externalOpen
-    : isContextControlled
-      ? expandedId === id
-      : internalOpen;
-
-  const toggleCurrentExpanded = () => {
-    if (isControlled) {
-      setExpernalOpen((prev) => !prev);
-    } else if (isInsideContext && id !== undefined) {
-      setExpanded(id);
+    if (isCurrentExpanded) {
+      const height = contentEl.scrollHeight;
+      contentEl.style.height = height + "px";
     } else {
-      setInternalOpen((prev) => !prev);
+      contentEl.style.height = "0px";
     }
-  };
+  }, [isCurrentExpanded]);
 
   return (
-    <ExpandableContext.Provider
+    <ExpandableContextProvider
       value={{
         isCurrentExpanded,
         toggleCurrentExpanded,
+        triggerRef,
+        contentRef,
         isInsideContext: true,
       }}
     >
-      {children}
-    </ExpandableContext.Provider>
+       <div>
+         {children}
+       </div>
+    </ExpandableContextProvider>
   );
 };

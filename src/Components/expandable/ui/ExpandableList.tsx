@@ -1,23 +1,6 @@
-import { createContext, use, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
+import { ExpandableListContextProvider } from "../context/ExpandableListContext";
 import type { ExpandableId } from "../types";
-
-type ExpandableListContextType = {
-  expandedId: ExpandableId | null;
-  setExpanded: (id: ExpandableId) => void;
-  isInsideContext: boolean;
-  registerId: (id: ExpandableId) => void;
-  unregisterId: (id: ExpandableId) => void;
-};
-
-const ExpandableListContext = createContext<ExpandableListContextType>({
-  expandedId: null,
-  setExpanded: () => {},
-  registerId: () => {},
-  unregisterId: () => {},
-  isInsideContext: false,
-});
-
-export const useExpandableListContext = () => use(ExpandableListContext);
 
 type ExpandableListProps = {
   children: React.ReactNode;
@@ -43,7 +26,7 @@ export const ExpandableList: React.FC<ExpandableListProps> = ({ children }) => {
   }
 
   return (
-    <ExpandableListContext.Provider
+    <ExpandableListContextProvider
       value={{
         expandedId,
         setExpanded,
@@ -53,6 +36,6 @@ export const ExpandableList: React.FC<ExpandableListProps> = ({ children }) => {
       }}
     >
       {children}
-    </ExpandableListContext.Provider>
+    </ExpandableListContextProvider>
   );
 };

@@ -6,17 +6,21 @@ type ExpandableContentProps = {
   children: React.ReactNode;
   className?: string;
   wrapperClassName?: string;
-  isAbsolute?: boolean;
 };
 
 export const ExpandableContent: React.FC<ExpandableContentProps> = ({
   children,
   className,
   wrapperClassName,
-  isAbsolute,
 }) => {
-  const { isInsideContext, contentRef, triggerRef, isCurrentExpanded, axle } =
-    useExpandableContext();
+  const {
+    isInsideContext,
+    contentRef,
+    triggerRef,
+    isCurrentExpanded,
+    axle,
+    contentAbsolute,
+  } = useExpandableContext();
 
   if (!isInsideContext)
     throw new Error("'ExpandableContent' has to be inside 'Expandable'");
@@ -37,13 +41,19 @@ export const ExpandableContent: React.FC<ExpandableContentProps> = ({
     switch (axle) {
       case "vertical":
         contentEl.style.height = isCurrentExpanded ? `${height}px` : "0px";
-        if (contentBefore) contentEl.style.bottom = "100%";
-        contentEl.style.top = "100%";
+        if (contentBefore) {
+          contentEl.style.bottom = "100%";
+        } else {
+          contentEl.style.top = "100%";
+        }
         break;
       case "horisontal":
         contentEl.style.width = isCurrentExpanded ? `${width}px` : "0px";
-        if (contentBefore) contentEl.style.left = "100%";
-        contentEl.style.right = "100%";
+        if (contentBefore) {
+          contentEl.style.left = "100%";
+        } else {
+          contentEl.style.right = "100%";
+        }
         break;
       default:
         break;
@@ -56,7 +66,7 @@ export const ExpandableContent: React.FC<ExpandableContentProps> = ({
         !isCurrentExpanded && axle === "vertical" && "h-0",
         !isCurrentExpanded && axle === "horisontal" && "w-0",
         "overflow-hidden transition-all duration-300 flex-1",
-        isAbsolute && "absolute",
+        contentAbsolute && "absolute",
         wrapperClassName,
       )}
       ref={contentRef}

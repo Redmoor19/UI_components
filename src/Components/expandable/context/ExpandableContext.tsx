@@ -8,6 +8,7 @@ type ExpandableContextType = {
   contentRef: React.RefObject<HTMLDivElement | null>;
   isInsideContext: boolean;
   axle: ExpandableAxle;
+  contentAbsolute?: boolean;
 };
 
 const ExpandableContext = createContext<ExpandableContextType>({
@@ -17,6 +18,7 @@ const ExpandableContext = createContext<ExpandableContextType>({
   contentRef: { current: null },
   isInsideContext: false,
   axle: "vertical",
+  contentAbsolute: false,
 });
 
 export const useExpandableContext = () => use(ExpandableContext);

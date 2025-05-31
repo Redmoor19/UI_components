@@ -1,27 +1,37 @@
 import { twMerge } from "tailwind-merge";
 import { useExpandableContext } from "../context/ExpandableContext";
 
-interface ButtonPropsType extends React.ComponentPropsWithoutRef<"button"> {};
+type ButtonPropsWithoutChildren = Omit<
+  React.ComponentPropsWithoutRef<"button">,
+  "children"
+>;
 
-interface ExpandableTriggerProps extends ButtonPropsType {
-  children: React.ReactNode
-}
+type ExpandableTriggerProps = ButtonPropsWithoutChildren & {
+  children:
+    | React.ReactNode
+    | ((data: { isCurrentExpanded: boolean }) => React.ReactNode);
+  withToggle?: boolean;
+};
 
 export const ExpandableTrigger: React.FC<ExpandableTriggerProps> = ({
   children,
+  withToggle = false,
   ...props
 }) => {
-  const { toggleCurrentExpanded, triggerRef } = useExpandableContext();
+  const { toggleCurrentExpanded, isCurrentExpanded, triggerRef } =
+    useExpandableContext();
 
   return (
-      <button
-          type="submit"
-          className={twMerge("block w-full", props.className)}
-          ref={triggerRef}
-          onClick={toggleCurrentExpanded}
-          {...props}
-      >
-      {children}
+    <button
+      type="button"
+      className={twMerge("block mx-auto", props.className)}
+      ref={triggerRef}
+      onClick={toggleCurrentExpanded}
+      {...props}
+    >
+      {typeof children === "function"
+        ? children({ isCurrentExpanded })
+        : children}
     </button>
   );
 };

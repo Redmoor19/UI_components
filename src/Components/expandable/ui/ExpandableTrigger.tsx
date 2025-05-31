@@ -11,11 +11,13 @@ type ExpandableTriggerProps = ButtonPropsWithoutChildren & {
     | React.ReactNode
     | ((data: { isCurrentExpanded: boolean }) => React.ReactNode);
   withToggle?: boolean;
+  className?: string;
 };
 
 export const ExpandableTrigger: React.FC<ExpandableTriggerProps> = ({
   children,
   withToggle = false,
+  className,
   ...props
 }) => {
   const { toggleCurrentExpanded, isCurrentExpanded, triggerRef } =
@@ -24,7 +26,7 @@ export const ExpandableTrigger: React.FC<ExpandableTriggerProps> = ({
   return (
     <button
       type="button"
-      className={twMerge("block mx-auto", props.className)}
+      className={twMerge("block mx-auto", className)}
       ref={triggerRef}
       onClick={toggleCurrentExpanded}
       {...props}

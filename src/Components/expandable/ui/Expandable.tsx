@@ -13,6 +13,7 @@ type ExpandableProps = {
   setExpanded?: Dispatch<SetStateAction<boolean>>;
   className?: string;
   axle?: ExpandableAxle;
+  contentAbsolute?: boolean;
 };
 
 export const Expandable: React.FC<ExpandableProps> = ({
@@ -22,6 +23,7 @@ export const Expandable: React.FC<ExpandableProps> = ({
   setExpanded: setExpernalOpen,
   className,
   axle = "vertical",
+  contentAbsolute = false,
 }) => {
   const { expandedId, setExpanded, registerId, unregisterId, isInsideContext } =
     useExpandableListContext();
@@ -55,13 +57,19 @@ export const Expandable: React.FC<ExpandableProps> = ({
         contentRef,
         isInsideContext: true,
         axle,
+        contentAbsolute,
       }}
     >
-      <div className={twMerge(
-        "relative",
-        axle === "horisontal" && "flex h-full items-center",
-        className
-      )}>{children}</div>
+      <div
+        className={twMerge(
+          "relative items-center justify-center",
+          axle === "horisontal" && "flex h-full",
+          axle === "vertical" && contentAbsolute && "flex",
+          className,
+        )}
+      >
+        {children}
+      </div>
     </ExpandableContextProvider>
   );
 };

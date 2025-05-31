@@ -1,15 +1,18 @@
-import { type Dispatch, type SetStateAction, useEffect, useRef } from "react";
+import { type Dispatch, type SetStateAction, useRef } from "react";
+import { twMerge } from "tailwind-merge";
 import { ExpandableContextProvider } from "../context/ExpandableContext";
 import { useExpandableListContext } from "../context/ExpandableListContext";
 import { useExpand } from "../hooks/useExpand";
 import { useRegister } from "../hooks/useRegister";
-import type { ExpandableId } from "../types";
+import type { ExpandableAxle, ExpandableId } from "../types";
 
 type ExpandableProps = {
   children: React.ReactNode;
   id?: ExpandableId;
   expanded?: boolean;
   setExpanded?: Dispatch<SetStateAction<boolean>>;
+  className?: string;
+  axle?: ExpandableAxle;
 };
 
 export const Expandable: React.FC<ExpandableProps> = ({
@@ -17,6 +20,8 @@ export const Expandable: React.FC<ExpandableProps> = ({
   id,
   expanded: externalOpen,
   setExpanded: setExpernalOpen,
+  className,
+  axle = "vertical",
 }) => {
   const { expandedId, setExpanded, registerId, unregisterId, isInsideContext } =
     useExpandableListContext();
@@ -41,20 +46,6 @@ export const Expandable: React.FC<ExpandableProps> = ({
     setExpernalOpen,
   );
 
-  useEffect(() => {
-    const triggerEl = triggerRef?.current;
-    const contentEl = contentRef?.current;
-
-    if (!triggerEl || !contentEl) return;
-
-    if (isCurrentExpanded) {
-      const height = contentEl.scrollHeight;
-      contentEl.style.height = height + "px";
-    } else {
-      contentEl.style.height = "0px";
-    }
-  }, [isCurrentExpanded]);
-
   return (
     <ExpandableContextProvider
       value={{
@@ -63,11 +54,14 @@ export const Expandable: React.FC<ExpandableProps> = ({
         triggerRef,
         contentRef,
         isInsideContext: true,
+        axle,
       }}
     >
-       <div>
-         {children}
-       </div>
+      <div className={twMerge(
+        "relative",
+        axle === "horisontal" && "flex h-full items-center",
+        className
+      )}>{children}</div>
     </ExpandableContextProvider>
   );
 };

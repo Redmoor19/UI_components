@@ -1,4 +1,5 @@
 import { createContext, use } from "react";
+import type { ExpandableAxle } from "../types";
 
 type ExpandableContextType = {
   isCurrentExpanded: boolean;
@@ -6,6 +7,7 @@ type ExpandableContextType = {
   triggerRef: React.RefObject<HTMLButtonElement | null>;
   contentRef: React.RefObject<HTMLDivElement | null>;
   isInsideContext: boolean;
+  axle: ExpandableAxle;
 };
 
 const ExpandableContext = createContext<ExpandableContextType>({
@@ -14,6 +16,7 @@ const ExpandableContext = createContext<ExpandableContextType>({
   triggerRef: { current: null },
   contentRef: { current: null },
   isInsideContext: false,
+  axle: "vertical",
 });
 
 export const useExpandableContext = () => use(ExpandableContext);

@@ -1,74 +1,26 @@
 import { Expandable } from "./Components/expandable/ui/Expandable";
 import { ExpandableContent } from "./Components/expandable/ui/ExpandableContent";
-import { ExpandableList } from "./Components/expandable/ui/ExpandableList";
 import { ExpandableTrigger } from "./Components/expandable/ui/ExpandableTrigger";
 
 function App() {
   return (
-      <div>
-          <ExpandableList>
-              <Expandable id="1">
-                <ExpandableContent className="">
-                      <div className="p-5 border-[1px] border-red-400">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                          eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem
-                          ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                          tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor
-                          sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                          incididunt ut labore et dolore magna aliqua.
-                      </div>
-                  </ExpandableContent>
-                <ExpandableTrigger>
-                      <h2 className="p-3 border-[1px] border-black">Expandable</h2>
-                  </ExpandableTrigger>
-              </Expandable>
-              <Expandable id="2">
-                  <ExpandableTrigger>
-                      <h2 className="p-3 border-[1px] border-black">Expandable</h2>
-                  </ExpandableTrigger>
-                  <ExpandableContent>
-                      <div className="p-5 border-[1px] border-red-400">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                          eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem
-                          ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                          tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor
-                          sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                          incididunt ut labore et dolore magna aliqua.
-                      </div>
-                  </ExpandableContent>
-              </Expandable>
-              <Expandable id="3">
-                  <ExpandableTrigger>
-                      <h2 className="p-3 border-[1px] border-black">Expandable</h2>
-                  </ExpandableTrigger>
-                  <ExpandableContent>
-                      <div className="p-5 border-[1px] border-red-400">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                          eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem
-                          ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                          tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor
-                          sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                          incididunt ut labore et dolore magna aliqua.
-                      </div>
-                  </ExpandableContent>
-              </Expandable>
-              <Expandable id="4">
-                  <ExpandableTrigger>
-                      <h2 className="p-3 border-[1px] border-black">Expandable</h2>
-                  </ExpandableTrigger>
-                  <ExpandableContent>
-                      <div className="p-5 border-[1px] border-red-400">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                          eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem
-                          ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                          tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor
-                          sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                          incididunt ut labore et dolore magna aliqua.
-                      </div>
-                  </ExpandableContent>
-              </Expandable>
-          </ExpandableList>
-      </div>
+    <div className="h-dvh flex justify-center items-center">
+      <Expandable axle="horisontal">
+        <ExpandableContent
+          className="border border-red-400 p-2 w-96"
+        >
+          Aliquam erat volutpat. Nunc eleifend leo vitae magna. In id erat non
+          orci commodo lobortis. Proin neque massa, cursus ut, gravida ut,
+          lobortis eget, lacus. Sed diam. Praesent fermentum tempor tellus.
+          Nullam tempus. Mauris ac felis vel velit tristique imperdiet. Donec at
+          pede. Etiam vel neque nec dui dignissim bibendum. Vivamus id enim.
+          Phasellus neque orci, porta a, aliquet quis, semper a, massa.
+          Phasellus purus. Pellentesque tristique imperdiet tortor. Nam euismod
+          tellus id erat.
+        </ExpandableContent>
+        <ExpandableTrigger className="px-3">Trigger</ExpandableTrigger>
+      </Expandable>
+    </div>
   );
 }
 
